@@ -23,6 +23,7 @@ public class UserService implements UserDetailsService {
   }
 
   public User getUserByUsername(String username) {
+    System.out.println("in get userbyUsername");
     return repository.findByUsername(username);
   }
 
