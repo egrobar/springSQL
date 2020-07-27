@@ -13,11 +13,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users2")
 public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "idusers")
+  @Column(name = "idusers2")
   private Integer id;
   @Column(name = "username")
   private String username;

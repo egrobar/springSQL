@@ -12,12 +12,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.springBoot.Config.WebSecurityConfig;
+import com.springBoot.demo.Config.*;
 
 @RestController
 public class UserController {
@@ -50,10 +51,14 @@ public class UserController {
 
     final User user = service
       .getUserByUsername(authenticationRequest.getUsername());
-      System.out.println(user);
-
-    final String jwt = jwtTokenUtil.generateToken(user);
-    System.out.println("jwtToken: " + jwt);
-    return ResponseEntity.ok(new AuthenticationResponse(jwt));
+      System.out.println(user.getPassword());
+      
+    
+    if (BCrypt.checkpw(authenticationRequest.getPassword(), user.getPassword())) {
+      final String jwt = jwtTokenUtil.generateToken(user);
+      System.out.println("jwtToken: " + jwt);
+      return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
+    return ResponseEntity.ok("Password Incorrect");
   }
 }
